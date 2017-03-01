@@ -26,7 +26,7 @@ See Scenario 1 for details on how to create a secondary view
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="12,10,12,12">
         <StackPanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="LayoutRoot">
-            <TextBlock Style="{StaticResource SampleHeaderTextStyle}">This is a secondary view</TextBlock>
+            <TextBlock Style="{StaticResource SampleHeaderTextStyle}">This is a Connected page </TextBlock>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -34,14 +34,15 @@ See Scenario 1 for details on how to create a secondary view
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource BasicTextStyle}">Title (appears in system switchers):</TextBlock>
-                <TextBox x:Name="TitleBox" Grid.Column="1"></TextBox>
-                <Button Grid.Column="2" Click="SetTitle_Click">Set title</Button>
-                <Button Grid.Column="3" Click="ClearTitle_Click">Clear title</Button>
+                <TextBlock Style="{StaticResource BasicTextStyle}">Select COM:</TextBlock>
+                <ComboBox x:Name="cb_list_com" Grid.Column="1"></ComboBox>
+                <Button Grid.Column="2" Click="Connect_Click">Connect</Button>
+                <Button Grid.Column="3" Click="ClearTitle_Click">DisConnect</Button>
             </Grid>
             <Button Click="ProtocolLaunch_Click">Activate this app for a protocol</Button>
             <Button Click="GoToMain_Click">Switch to main view</Button>
             <Button Click="HideView_Click">Switch to main and hide this view</Button>
+            <Button Click="TestLinkMultiPage">Link Multi Page</Button>
             <TextBlock x:Name="ProtocolText" Visibility="Collapsed" Style="{StaticResource BasicTextStyle}">
                 <Run>This window was launched with protocol: </Run><Run x:Name="ProtocolContent"/>
             </TextBlock>

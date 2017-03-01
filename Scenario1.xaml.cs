@@ -39,33 +39,21 @@ namespace SDKTemplate
 
             // "UseNone" is not a valid choice for the incoming view, so only include
             // it in the anchor size preference chooser
-            var anchorSizeChoices = GenerateSizePreferenceBinding();
-            anchorSizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.UseNone, Title = "UseNone" });
-            AnchorSizePreferenceChooser.ItemsSource = anchorSizeChoices;
-            AnchorSizePreferenceChooser.SelectedIndex = 0;
-
-            SizePreferenceChooser.ItemsSource = GenerateSizePreferenceBinding();
-            SizePreferenceChooser.SelectedIndex = 0;
+            //var anchorSizeChoices = GenerateSizePreferenceBinding();
+            //anchorSizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.UseNone, Title = "UseNone" });
 
             // This collection is being bound to the current thread.
             // So, make sure you only update the collection and items
             // contained in it from this thread.
-            ViewChooser.ItemsSource = ((App)App.Current).SecondaryViews;
+            //ViewChooser.ItemsSource = ((App)App.Current).SecondaryViews;
+            test_multiView.ItemsSource = ((App)App.Current).SecondaryViews;
         }
 
-        private List<SizePreferenceString> GenerateSizePreferenceBinding()
+        private void CreateView_Click(object sender, RoutedEventArgs e)
         {
-            var sizeChoices = new List<SizePreferenceString>();
-            sizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.Default,    Title = "Default" });
-            sizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.UseHalf,    Title = "UseHalf" });
-            sizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.UseLess,    Title = "UseLess" });
-            sizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.UseMinimum, Title = "UseMinimum" });
-            sizeChoices.Add(new SizePreferenceString() { Preference = ViewSizePreference.UseMore,    Title = "UseMore" });
-
-            return sizeChoices;
+            add_new_window();
         }
-
-        private async void CreateView_Click(object sender, RoutedEventArgs e)
+        public async void add_new_window()
         {
             // Set up the secondary view, but don't show it yet
             ViewLifetimeControl viewControl = null;
@@ -91,15 +79,21 @@ namespace SDKTemplate
             // Be careful! This collection is bound to the current thread,
             // so make sure to update it only from this thread
             ((App)App.Current).SecondaryViews.Add(viewControl);
+            
         }
 
+        ListBox test_multiView = new ListBox();
         private async void ShowAsStandalone_Click(object sender, RoutedEventArgs e)
         {
-            var selectedView = ViewChooser.SelectedItem as ViewLifetimeControl;
-            var sizePreference = SizePreferenceChooser.SelectedItem as SizePreferenceString;
-            var anchorSizePreference = AnchorSizePreferenceChooser.SelectedItem as SizePreferenceString;
+            //test_multiView.Items.Add("New window");
 
-            if (selectedView != null && sizePreference != null && anchorSizePreference != null)
+            //add_new_window();
+            test_multiView.SelectedIndex = 0;
+            //test_multiView.SelectedIndex = 0;
+            var selectedView = test_multiView.SelectedItem as ViewLifetimeControl;
+            //ViewLifetimeControl test = new ViewLifetimeControl();
+
+            if (selectedView != null)
             {
                 try
                 {
@@ -113,9 +107,9 @@ namespace SDKTemplate
                     // instead of requiring the user to decide.
                     var viewShown = await ApplicationViewSwitcher.TryShowAsStandaloneAsync(
                         selectedView.Id,
-                        sizePreference.Preference,
+                        ViewSizePreference.Default,
                         ApplicationView.GetForCurrentView().Id,
-                        anchorSizePreference.Preference);
+                        ViewSizePreference.Default);
 
                     if (!viewShown)
                     {

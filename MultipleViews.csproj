@@ -171,6 +171,33 @@
     <Content Include="..\..\..\SharedContent\media\windows-sdk.png">
       <Link>Assets\windows-sdk.png</Link>
     </Content>
+    <Content Include="Assets\airplane-icon.png" />
+    <Content Include="Assets\AltitudeFull.png" />
+    <Content Include="Assets\AltitudeFull_v2.png" />
+    <Content Include="Assets\background_ocean_edit_2.png" />
+    <Content Include="Assets\Compass_Rose_English_North.png" />
+    <Content Include="Assets\fuel_needle.png" />
+    <Content Include="Assets\gas_station.png" />
+    <Content Include="Assets\horizon.bmp" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\Logo150x150.png" />
+    <Content Include="Assets\Logo310x150.png" />
+    <Content Include="Assets\Logo44x44.png" />
+    <Content Include="Assets\Logo50x50.png" />
+    <Content Include="Assets\Logo_Full.png" />
+    <Content Include="Assets\Logo_Full_620x300.png" />
+    <Content Include="Assets\MyHome.png" />
+    <Content Include="Assets\Needle.png" />
+    <Content Include="Assets\needle_aagle_to_des.png" />
+    <Content Include="Assets\needle_speed.png" />
+    <Content Include="Assets\Speed_full.PNG" />
+    <Content Include="Assets\Speed_Full_v2.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="WindowsDesktop, Version=10.0.14393.0">

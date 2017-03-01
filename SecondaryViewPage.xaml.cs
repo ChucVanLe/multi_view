@@ -16,6 +16,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using System.Collections.ObjectModel;
+using Windows.Devices.Enumeration;
+using Windows.Devices.SerialCommunication;
 
 namespace SDKTemplate
 {
@@ -33,10 +36,14 @@ namespace SDKTemplate
         ViewLifetimeControl thisViewControl;
         int mainViewId;
         CoreDispatcher mainDispatcher;
-
+        MainPage rootPage = MainPage.Current;
+        //list com
+        private ObservableCollection<DeviceInformation> listOfDevices;
         public SecondaryViewPage()
         {
             this.InitializeComponent();
+            listOfDevices = new ObservableCollection<DeviceInformation>();
+            ListAvailablePorts();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -56,6 +63,8 @@ namespace SDKTemplate
             thisViewControl.StartViewInUse();
             await ApplicationViewSwitcher.SwitchAsync(mainViewId);
             thisViewControl.StopViewInUse();
+
+
         }
 
         private async void HideView_Click(object sender, RoutedEventArgs e)
@@ -68,18 +77,11 @@ namespace SDKTemplate
             thisViewControl.StopViewInUse();
         }
 
-        private void SetTitle_Click(object sender, RoutedEventArgs e)
-        {
-            // Set a title for the window. This title is visible
-            // in system switchers
-            SetTitle(TitleBox.Text);
-        }
-
         private void ClearTitle_Click(object sender, RoutedEventArgs e)
         {
             // Clear the title by setting it to blank
             SetTitle("");
-            TitleBox.Text = "";
+            //TitleBox.Text = "";
         }
 
         private async void SetTitle(string newTitle)
@@ -169,7 +171,7 @@ namespace SDKTemplate
             thisViewControl.StopViewInUse();
         }
 
-        private Storyboard CreateEnterAnimation(Panel layoutRoot)
+        private Storyboard CreateEnterAnimation(Windows.UI.Xaml.Controls.Panel layoutRoot)
         {
             var enterAnimation = new Storyboard();
 
@@ -243,5 +245,46 @@ namespace SDKTemplate
             }
             return enterAnimation;
         }
+
+        private void TestLinkMultiPage(object sender, RoutedEventArgs e)
+        {
+            //rootPage.link_multi_page();
+        }
+
+        private void Connect_Click(object sender, RoutedEventArgs e)
+        {
+            rootPage.link_multi_page_connect_device(9600, cb_list_com.SelectedItem.ToString());
+        }
+
+        //list COM
+        private async void ListAvailablePorts()
+        {
+            try
+            {
+                string aqs = SerialDevice.GetDeviceSelector();
+                var dis = await DeviceInformation.FindAllAsync(aqs);
+
+                //status.Text = "Select a device and connect";
+                for (int i = 0; i < dis.Count; i++)
+                {
+                    listOfDevices.Remove(dis[i]);
+                    cb_list_com.Items.Remove(dis[i].Name);
+                }
+                for (int i = 0; i < dis.Count; i++)
+                {
+                    listOfDevices.Add(dis[i]);
+                    cb_list_com.Items.Add(dis[i].Name);
+                }
+
+                //DeviceListSource.Source = listOfDevices;
+                //comPortInput.IsEnabled = true;
+                //ConnectDevices.SelectedIndex = -1;
+            }
+            catch
+            {
+                //status.Text = ex.Message;
+            }
+        }
+
     }
 }

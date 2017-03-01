@@ -55,9 +55,7 @@
                 <TextBlock Style="{StaticResource BasicTextStyle}">Open views:</TextBlock>
                 <ListBox x:Name="ViewChooser" ItemTemplate="{StaticResource CommonListBoxTemplate}" Style="{StaticResource CommonListBoxStyle}"/>
                 <TextBlock Style="{StaticResource BasicTextStyle}">Size preference for view to be shown:</TextBlock>
-                <ListBox x:Name="SizePreferenceChooser" ItemTemplate="{StaticResource CommonListBoxTemplate}" Style="{StaticResource CommonListBoxStyle}"/>
-                <TextBlock Style="{StaticResource BasicTextStyle}">Size preference for this view:</TextBlock>
-                <ListBox x:Name="AnchorSizePreferenceChooser" ItemTemplate="{StaticResource CommonListBoxTemplate}" Style="{StaticResource CommonListBoxStyle}"/>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

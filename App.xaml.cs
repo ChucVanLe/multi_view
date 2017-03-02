@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.ViewManagement;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=402347&clcid=0x409
 
@@ -33,6 +34,7 @@ namespace SDKTemplate
         public App()
         {
             this.InitializeComponent();
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
             this.Construct();
         }
 
@@ -68,6 +70,7 @@ namespace SDKTemplate
 
         private void InitializeMainPage(ApplicationExecutionState previousExecutionState, String arguments)
         {
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
             Frame rootFrame = CreateRootFrame();
 
             if (rootFrame.Content == null || !string.IsNullOrEmpty(arguments))

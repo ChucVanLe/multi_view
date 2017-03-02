@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
+using Windows.Foundation;
 
 namespace SDKTemplate
 {
@@ -44,11 +45,21 @@ namespace SDKTemplate
             this.InitializeComponent();
             listOfDevices = new ObservableCollection<DeviceInformation>();
             ListAvailablePorts();
+            //Window.Current.Bounds.Width = 100;
+            //Application.Current. = 420;
+            //Application.Current.MainWindow.Height = 420;
+            //Application.Current.MainWindow = this;
+            //ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(200, 200));
+            ApplicationView.PreferredLaunchViewSize = new Size(600, 600);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
+            //Window.Current.Activate();
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            thisViewControl = (ViewLifetimeControl) e.Parameter;
+            thisViewControl = (ViewLifetimeControl)e.Parameter;
             mainViewId = ((App)App.Current).MainViewId;
             mainDispatcher = ((App)App.Current).MainDispatcher;
 
@@ -131,8 +142,8 @@ namespace SDKTemplate
         {
             // This code should only get executed if DisableSystemActivationPolicy
             // has not been called.
-            ProtocolText.Visibility = Visibility.Visible;
-            ProtocolText.Text = uri.AbsoluteUri;
+            //ProtocolText.Visibility = Visibility.Visible;
+            //ProtocolText.Text = uri.AbsoluteUri;
         }
 
         private async void ProtocolLaunch_Click(object sender, RoutedEventArgs e)
@@ -251,9 +262,18 @@ namespace SDKTemplate
             //rootPage.link_multi_page();
         }
 
-        private void Connect_Click(object sender, RoutedEventArgs e)
+        private async void Connect_Click(object sender, RoutedEventArgs e)
         {
             rootPage.link_multi_page_connect_device(9600, cb_list_com.SelectedItem.ToString());
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+            ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+            //Application.Current.cl();
+            thisViewControl.StartViewInUse();
+            await ApplicationViewSwitcher.SwitchAsync(mainViewId,
+                ApplicationView.GetForCurrentView().Id,
+                ApplicationViewSwitchingOptions.ConsolidateViews);
+            thisViewControl.StopViewInUse();
+            //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
         }
 
         //list COM

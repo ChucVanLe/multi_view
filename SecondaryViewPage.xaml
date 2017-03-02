@@ -22,30 +22,26 @@ See Scenario 1 for details on how to create a secondary view
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="12,10,12,12">
         <StackPanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="LayoutRoot">
-            <TextBlock Style="{StaticResource SampleHeaderTextStyle}">This is a Connected page </TextBlock>
+            <TextBlock Style="{StaticResource SampleHeaderTextStyle}">This is a Connected page</TextBlock>
             <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource BasicTextStyle}">Select COM:</TextBlock>
-                <ComboBox x:Name="cb_list_com" Grid.Column="1"></ComboBox>
-                <Button Grid.Column="2" Click="Connect_Click">Connect</Button>
-                <Button Grid.Column="3" Click="ClearTitle_Click">DisConnect</Button>
+
+                <TextBlock Style="{StaticResource BasicTextStyle}" Margin="18,5,1154,7">Select COM:</TextBlock>
+                <ComboBox x:Name="cb_list_com" Margin="115,0,0,0" Width="249"/>
+                <Button  Click="Connect_Click" Margin="115,65,0,-65" Width="158">Connect</Button>
+                <Button Click="ClearTitle_Click" Margin="391,65,0,-65" Width="152">DisConnect</Button>
+                <ComboBox HorizontalAlignment="Left" x:Name="cb_baud_rate" Margin="463,0,0,0" VerticalAlignment="Top" Width="99"/>
+                <TextBlock HorizontalAlignment="Left" Margin="384,5,0,0" TextWrapping="Wrap" Text="Baud Rate" VerticalAlignment="Top"/>
+                <Button Click="GoToMain_Click" Margin="18,126,0,-126">Switch to main view</Button>
+                <Button Click="HideView_Click" Content="Switch to main and hide this view" Margin="302,126,0,-126"/>
+
             </Grid>
-            <Button Click="ProtocolLaunch_Click">Activate this app for a protocol</Button>
-            <Button Click="GoToMain_Click">Switch to main view</Button>
-            <Button Click="HideView_Click">Switch to main and hide this view</Button>
-            <Button Click="TestLinkMultiPage">Link Multi Page</Button>
-            <TextBlock x:Name="ProtocolText" Visibility="Collapsed" Style="{StaticResource BasicTextStyle}">
-                <Run>This window was launched with protocol: </Run><Run x:Name="ProtocolContent"/>
-            </TextBlock>
+
+
         </StackPanel>
     </Grid>
 </Page>

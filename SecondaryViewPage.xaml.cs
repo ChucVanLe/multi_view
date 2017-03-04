@@ -21,6 +21,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
 using Windows.Foundation;
 
+
 namespace SDKTemplate
 {
     // This page is shown in secondary views created by this app.
@@ -50,11 +51,39 @@ namespace SDKTemplate
             //Application.Current.MainWindow.Height = 420;
             //Application.Current.MainWindow = this;
             //ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(200, 200));
-            ApplicationView.PreferredLaunchViewSize = new Size(600, 600);
+            ApplicationView.PreferredLaunchViewSize = new Size(600, 300);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             //Window.Current.Activate();
+            //add baud rate
+            //add baund rate to cb_bateRate
+            cb_BaudRate.Items.Insert(0, "4800");
+            cb_BaudRate.Items.Insert(1, "9600");
+            cb_BaudRate.Items.Insert(2, "19200");
+            cb_BaudRate.Items.Insert(3, "38400");
+            cb_BaudRate.Items.Insert(4, "57600");
+            cb_BaudRate.Items.Insert(5, "115200");
+            cb_BaudRate.Items.Insert(6, "460800");
 
+            Window.Current.CoreWindow.VisibilityChanged += CoreWindow_VisibilityChanged;
+            //media 
+            setup_media();
+        }
+        public async void setup_media()
+        {
+            //folder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
+            //file = await folder.GetFileAsync("LacTroi-SonTungMTP.mp3");
+            ////file = await folder.GetFileAsync("LẠC TRÔI - OFFICIAL MUSIC VIDEO - SƠN TÙNG M-TP.mp4");
+            //var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            //media.SetSource(stream, file.ContentType);
+        }
+
+        void CoreWindow_VisibilityChanged(CoreWindow sender, VisibilityChangedEventArgs args)
+        {
+            if (!args.Visible)
+            {
+                // Action here
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -67,13 +96,19 @@ namespace SDKTemplate
             thisViewControl.Released += ViewLifetimeControl_Released;
         }
 
+        MediaElement media = new MediaElement();
+        Windows.Storage.StorageFolder folder;
+        Windows.Storage.StorageFile file;
         private async void GoToMain_Click(object sender, RoutedEventArgs e)
         {
             // Switch to the main view without explicitly requesting
             // that this view be hidden
+
+            //-------------------------------------
             thisViewControl.StartViewInUse();
             await ApplicationViewSwitcher.SwitchAsync(mainViewId);
             thisViewControl.StopViewInUse();
+            //----test------------------
 
 
         }
@@ -264,15 +299,20 @@ namespace SDKTemplate
 
         private async void Connect_Click(object sender, RoutedEventArgs e)
         {
-            rootPage.link_multi_page_connect_device(9600, cb_list_com.SelectedItem.ToString());
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
-            ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
-            //Application.Current.cl();
-            thisViewControl.StartViewInUse();
-            await ApplicationViewSwitcher.SwitchAsync(mainViewId,
-                ApplicationView.GetForCurrentView().Id,
-                ApplicationViewSwitchingOptions.ConsolidateViews);
-            thisViewControl.StopViewInUse();
+            try
+            {
+                rootPage.link_multi_page_connect_device(Convert.ToUInt32(cb_BaudRate.SelectedItem.ToString()), cb_list_com.SelectedItem.ToString());
+                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+                ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+                //Application.Current.cl();
+                thisViewControl.StartViewInUse();
+                await ApplicationViewSwitcher.SwitchAsync(mainViewId,
+                    ApplicationView.GetForCurrentView().Id,
+                    ApplicationViewSwitchingOptions.ConsolidateViews);
+                thisViewControl.StopViewInUse();
+            }
+            catch { }
+
             //ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
         }
 
@@ -306,5 +346,28 @@ namespace SDKTemplate
             }
         }
 
+        private async void DisConnect_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                rootPage.link_multi_page_dis_connect_device();
+                ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
+                ApplicationView.GetForCurrentView().TryEnterFullScreenMode();
+                //Application.Current.cl();
+                thisViewControl.StartViewInUse();
+                await ApplicationViewSwitcher.SwitchAsync(mainViewId,
+                    ApplicationView.GetForCurrentView().Id,
+                    ApplicationViewSwitchingOptions.ConsolidateViews);
+                thisViewControl.StopViewInUse();
+            }
+            catch { }
+
+        }
+
+        private void Test_pause_audio_Click(object sender, RoutedEventArgs e)
+        {
+            media.Pause();
+
+        }
     }
 }

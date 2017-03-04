@@ -25,23 +25,18 @@ See Scenario 1 for details on how to create a secondary view
 
     mc:Ignorable="d">
 
-    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}" Margin="12,10,12,12">
-        <StackPanel Background="{StaticResource ApplicationPageBackgroundThemeBrush}" x:Name="LayoutRoot">
-            <TextBlock Style="{StaticResource SampleHeaderTextStyle}">This is a Connected page</TextBlock>
-            <Grid>
-
-                <TextBlock Style="{StaticResource BasicTextStyle}" Margin="18,5,1154,7">Select COM:</TextBlock>
-                <ComboBox x:Name="cb_list_com" Margin="115,0,0,0" Width="249"/>
-                <Button  Click="Connect_Click" Margin="115,65,0,-65" Width="158">Connect</Button>
-                <Button Click="ClearTitle_Click" Margin="391,65,0,-65" Width="152">DisConnect</Button>
-                <ComboBox HorizontalAlignment="Left" x:Name="cb_baud_rate" Margin="463,0,0,0" VerticalAlignment="Top" Width="99"/>
-                <TextBlock HorizontalAlignment="Left" Margin="384,5,0,0" TextWrapping="Wrap" Text="Baud Rate" VerticalAlignment="Top"/>
-                <Button Click="GoToMain_Click" Margin="18,126,0,-126">Switch to main view</Button>
-                <Button Click="HideView_Click" Content="Switch to main and hide this view" Margin="302,126,0,-126"/>
-
-            </Grid>
+    <Grid Background="Gray" x:Name="LayoutRoot"  Margin="12,10,12,12">
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="30" Margin="10,5,0,0" Text="This is a Connected page"/>
 
 
-        </StackPanel>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,57,0,0" Text="Select COM"/>
+        <ComboBox  HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="cb_list_com" FontSize="18" Background="Brown" Margin="113,52,0,0" Width="249"/>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="368,57,0,0" TextWrapping="Wrap" Text="Baud Rate" />
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18"  Background="Brown" x:Name="cb_BaudRate" Margin="454,52,0,0" Width="113"/>
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="GoToMain_Click" FontSize="18" Background="Brown" Margin="113,192,0,0" Width="189" Content="Switch to main view"/>
+
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="HideView_Click" FontSize="20" Background="Brown" Content="Switch and hide" Margin="378,192,0,0" Width="189"/>
+        <Button Click="Connect_Click" FontSize="20" Background="Green" Foreground="White" x:Name="bt_connect" Content="Connect" HorizontalAlignment="Left" Margin="113,120,0,0" VerticalAlignment="Top" Width="189"/>
+        <Button Click="DisConnect_Click" FontSize="20" Background="Green" Foreground="White" x:Name="bt_disconnect" Content="DisConnect" HorizontalAlignment="Left" Margin="378,120,0,0" VerticalAlignment="Top" Width="189"/>
     </Grid>
 </Page>

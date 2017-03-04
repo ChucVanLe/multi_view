@@ -172,13 +172,25 @@
       <Link>Assets\windows-sdk.png</Link>
     </Content>
     <Content Include="Assets\airplane-icon.png" />
+    <Content Include="Assets\alarm_off.png" />
+    <Content Include="Assets\alarm_on.png" />
     <Content Include="Assets\AltitudeFull.png" />
     <Content Include="Assets\AltitudeFull_v2.png" />
     <Content Include="Assets\background_ocean_edit_2.png" />
     <Content Include="Assets\Compass_Rose_English_North.png" />
+    <Content Include="Assets\fire_alarm.mp3" />
+    <Content Include="Assets\fire_alrm_off.png" />
+    <Content Include="Assets\fire_alrm_on.png" />
+    <Content Include="Assets\fuel_alarm.mp3" />
+    <Content Include="Assets\fuel_alarm_off.png" />
+    <Content Include="Assets\fuel_alarm_on.png" />
     <Content Include="Assets\fuel_needle.png" />
     <Content Include="Assets\gas_station.png" />
+    <Content Include="Assets\gps_disconnect.mp3" />
+    <Content Include="Assets\gps_location_off.png" />
+    <Content Include="Assets\gps_location_on.png" />
     <Content Include="Assets\horizon.bmp" />
+    <Content Include="Assets\LacTroi-SonTungMTP.mp3" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\Logo150x150.png" />
     <Content Include="Assets\Logo310x150.png" />
@@ -190,6 +202,15 @@
     <Content Include="Assets\Needle.png" />
     <Content Include="Assets\needle_aagle_to_des.png" />
     <Content Include="Assets\needle_speed.png" />
+    <Content Include="Assets\over_slope.mp3" />
+    <Content Include="Assets\over_slope_off.png" />
+    <Content Include="Assets\over_slope_on.png" />
+    <Content Include="Assets\over_speed.mp3" />
+    <Content Include="Assets\over_speed_off.png" />
+    <Content Include="Assets\over_speed_on.png" />
+    <Content Include="Assets\plane_disconnect.mp3" />
+    <Content Include="Assets\plane_disconnect_off.png" />
+    <Content Include="Assets\plane_disconnect_on.png" />
     <Content Include="Assets\Speed_full.PNG" />
     <Content Include="Assets\Speed_Full_v2.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

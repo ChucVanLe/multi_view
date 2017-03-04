@@ -5,7 +5,7 @@
   <Properties>
     <DisplayName>MultipleViews C# Sample</DisplayName>
     <PublisherDisplayName>Microsoft Corporation</PublisherDisplayName>
-    <Logo>Assets\StoreLogo-sdk.png</Logo>
+    <Logo>Assets\Logo50x50.png</Logo>
   </Properties>
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.10240.0" MaxVersionTested="10.0.14393.0" />
@@ -15,13 +15,14 @@
   </Resources>
   <Applications>
     <Application Id="MultipleViews.App" Executable="$targetnametoken$.exe" EntryPoint="MultipleViews.App">
-      <uap:VisualElements DisplayName="MultipleViews C# sample" Square150x150Logo="Assets\squareTile-sdk.png" Square44x44Logo="Assets\SmallTile-sdk.png" Description="MultipleViews C# sample" BackgroundColor="#00b2f0">
-        <uap:SplashScreen Image="Assets\Splash-sdk.png" />
-        <uap:DefaultTile>
-          <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square150x150Logo" />
-          </uap:ShowNameOnTiles>
-        </uap:DefaultTile>
+      <uap:VisualElements DisplayName="Tracking Flight System" Square150x150Logo="Assets\Logo150x150.png" Square44x44Logo="Assets\Logo44x44.png" Description="MultipleViews C# sample" BackgroundColor="#00b2f0">
+          <uap:DefaultTile Wide310x150Logo="Assets\Logo310x150.png">
+              <uap:ShowNameOnTiles>
+                  <uap:ShowOn Tile="square150x150Logo" />
+                  <uap:ShowOn Tile="wide310x150Logo" />
+              </uap:ShowNameOnTiles>
+          </uap:DefaultTile>
+          <uap:SplashScreen Image="Assets\Logo_Full_620x300.png" />
       </uap:VisualElements>
       <Extensions>
         <uap:Extension Category="windows.protocol">
@@ -32,10 +33,10 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
-      <DeviceCapability Name="serialcommunication">
-          <Device Id="any">
-              <Function Type="name:serialPort" />
-          </Device>
-      </DeviceCapability>
+    <DeviceCapability Name="serialcommunication">
+      <Device Id="any">
+        <Function Type="name:serialPort" />
+      </Device>
+    </DeviceCapability>
   </Capabilities>
 </Package>

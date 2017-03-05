@@ -30,12 +30,12 @@ See Scenario 1 for details on how to create a secondary view
 
 
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="10,57,0,0" Text="Select COM"/>
-        <ComboBox  HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="cb_list_com" FontSize="18" Background="Brown" Margin="113,52,0,0" Width="249"/>
+        <ComboBox  HorizontalAlignment="Left" VerticalAlignment="Top" x:Name="cb_list_com" FontSize="18" Background="White" Margin="113,52,0,0" Width="249"/>
         <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Margin="368,57,0,0" TextWrapping="Wrap" Text="Baud Rate" />
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18"  Background="Brown" x:Name="cb_BaudRate" Margin="454,52,0,0" Width="113"/>
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="GoToMain_Click" FontSize="18" Background="Brown" Margin="113,192,0,0" Width="189" Content="Switch to main view"/>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18"  Background="White" x:Name="cb_BaudRate" Margin="454,52,0,0" Width="113"/>
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="GoToMain_Click" FontSize="18" Background="White" Margin="113,192,0,0" Width="189" Content="Switch to main view"/>
 
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="HideView_Click" FontSize="20" Background="Brown" Content="Switch and hide" Margin="378,192,0,0" Width="189"/>
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="HideView_Click" FontSize="20" Background="White" Content="Switch and hide" Margin="378,192,0,0" Width="189"/>
         <Button Click="Connect_Click" FontSize="20" Background="Green" Foreground="White" x:Name="bt_connect" Content="Connect" HorizontalAlignment="Left" Margin="113,120,0,0" VerticalAlignment="Top" Width="189"/>
         <Button Click="DisConnect_Click" FontSize="20" Background="Green" Foreground="White" x:Name="bt_disconnect" Content="DisConnect" HorizontalAlignment="Left" Margin="378,120,0,0" VerticalAlignment="Top" Width="189"/>
     </Grid>

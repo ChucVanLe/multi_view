@@ -20,7 +20,8 @@ using System.Collections.ObjectModel;
 using Windows.Devices.Enumeration;
 using Windows.Devices.SerialCommunication;
 using Windows.Foundation;
-
+using Windows.Networking.Connectivity;
+using System.Linq;
 
 namespace SDKTemplate
 {
@@ -319,6 +320,11 @@ namespace SDKTemplate
         //list COM
         private async void ListAvailablePorts()
         {
+            //test get name of pc
+
+            var hostNames = NetworkInformation.GetHostNames();
+            var localName = hostNames.FirstOrDefault(name => name.DisplayName.Contains(".local"));
+            var computerName = localName.DisplayName.Replace(".local", "");
             try
             {
                 string aqs = SerialDevice.GetDeviceSelector();
@@ -332,8 +338,12 @@ namespace SDKTemplate
                 }
                 for (int i = 0; i < dis.Count; i++)
                 {
-                    listOfDevices.Add(dis[i]);
-                    cb_list_com.Items.Add(dis[i].Name);
+                    if ((computerName != dis[i].Name) && ("MIPAD2" != dis[i].Name))
+                    {
+                        listOfDevices.Add(dis[i]);
+                        cb_list_com.Items.Add(dis[i].Name);
+                    }
+
                 }
 
                 //DeviceListSource.Source = listOfDevices;

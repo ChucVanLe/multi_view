@@ -11,12 +11,10 @@
 
 using System;
 using Windows.ApplicationModel;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Windows.UI.ViewManagement;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=402347&clcid=0x409
 
@@ -34,18 +32,17 @@ namespace SDKTemplate
         public App()
         {
             this.InitializeComponent();
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
             this.Construct();
         }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
-        /// will be used when the application is launched to open a specific file, to display
-        /// search results, and so forth.
+        /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -53,34 +50,37 @@ namespace SDKTemplate
             }
 #endif
 
-            // A sample can inject code into OnLaunched by implementing OverrideOnLaunched.
-            bool handled = false;
-            OverrideOnLaunched(e, ref handled);
+            Frame rootFrame = Window.Current.Content as Frame;
 
-            if (!handled)
+            // Do not repeat app initialization when the Window already has content,
+            // just ensure that the window is active
+            if (rootFrame == null)
             {
-                // We don't have the specified view in the collection, likely because it's the main view
-                // that got shown. Set up the main view to display.
-                InitializeMainPage(e.PreviousExecutionState, "");
+                // Create a Frame to act as the navigation context and navigate to the first page
+                rootFrame = new Frame();
+                // Set the default language
+                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
 
-                // This is the usual path at application startup
-                Window.Current.Activate();
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                {
+                    //TODO: Load state from previously suspended application
+                }
+
+                // Place the frame in the current Window
+                Window.Current.Content = rootFrame;
             }
-        }
 
-        private void InitializeMainPage(ApplicationExecutionState previousExecutionState, String arguments)
-        {
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.FullScreen;
-            Frame rootFrame = CreateRootFrame();
-
-            if (rootFrame.Content == null || !string.IsNullOrEmpty(arguments))
+            if (rootFrame.Content == null)
             {
-                // When the navigation stack isn't restored or there are launch arguments
-                // indicating an alternate launch (e.g.: via toast or secondary tile), 
-                // navigate to the appropriate page, configuring the new page by passing required 
-                // information as a navigation parameter
-                rootFrame.Navigate(typeof(MainPage), arguments);
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
 
         private Frame CreateRootFrame()
@@ -97,9 +97,7 @@ namespace SDKTemplate
                 // Set the default language
                 rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                InitializeRootFrame(rootFrame);
-
+                
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
@@ -119,11 +117,5 @@ namespace SDKTemplate
 
         // Add any application contructor code in here.
         partial void Construct();
-
-        // Hook into OnLaunched here.
-        partial void OverrideOnLaunched(LaunchActivatedEventArgs args, ref bool handled);
-
-        // Hook into InitializeMainPage here.
-        partial void InitializeRootFrame(Frame frame);
     }
 }

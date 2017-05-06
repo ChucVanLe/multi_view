@@ -1,0 +1,326 @@
+﻿<!--
+//*********************************************************
+//
+// Copyright (c) Microsoft. All rights reserved.
+// This code is licensed under the MIT License (MIT).
+// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
+// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
+// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
+// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+
+//*********************************************************
+-->
+<Page
+    x:Class="SDKTemplate.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SDKTemplate"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Main"
+    SizeChanged="reload_page"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="DeviceListSource"/>
+
+        <!--menu draw polygon-->
+        <DataTemplate x:Key="ItemTemplate" x:DataType="local:SampleDataModel">
+            <StackPanel Orientation="Horizontal" Height="80">
+                <Border Background="#55000000" Margin="10,10,10,10">
+                    <Image Source="{x:Bind ImagePath}" Stretch="UniformToFill" Width="60" Height="60" />
+                </Border>
+                <TextBlock Text="{x:Bind Title}" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+
+        <MenuFlyout x:Key="SampleContextMenu">
+            <MenuFlyoutItem Text="Draw" Tag="&#xE899;" Style="{StaticResource MenuFlyoutItemIconTemplate}"  Click="bt_draw_polygon"/>
+            <MenuFlyoutItem Text="Done" Tag="&#xE8FB;" Style="{StaticResource MenuFlyoutItemIconTemplate}"  Click="bt_done_polygon"/>
+            <MenuFlyoutItem Text="Clear" Tag="&#xE894;" Style="{StaticResource MenuFlyoutItemIconTemplate}" Click="bt_clear_polygon"/>
+            <MenuFlyoutItem Text="Save" Tag="&#xE74E;" Style="{StaticResource MenuFlyoutItemIconTemplate}" />
+
+            <!--<MenuFlyoutSubItem Text="Other">
+                <MenuFlyoutItem Text="Save" />
+                <MenuFlyoutItem Text="Save as" />
+                -->
+            <!--<MenuFlyoutItem Text="Date" />
+                <MenuFlyoutItem Text="Size" />-->
+            <!--
+            </MenuFlyoutSubItem>-->
+        </MenuFlyout>
+
+        <Style x:Key="MenuFlyoutItemIconTemplate" TargetType="MenuFlyoutItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuFlyoutItem">
+                        <Grid x:Name="LayoutRoot" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListLowBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Background">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListMediumBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="TextBlock" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Foreground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition From="Pressed" To="Normal">
+                                            <Storyboard>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="TextBlock" />
+                                            </Storyboard>
+                                        </VisualTransition>
+                                        <VisualTransition From="Pressed" To="PointerOver">
+                                            <Storyboard>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="TextBlock" />
+                                            </Storyboard>
+                                        </VisualTransition>
+                                    </VisualStateGroup.Transitions>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CheckPlaceholderStates">
+                                    <VisualState x:Name="NoPlaceholder" />
+                                    <VisualState x:Name="CheckPlaceholder">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="Margin">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemPlaceholderThemeThickness}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="PaddingSizeStates">
+                                    <VisualState x:Name="DefaultPadding" />
+                                    <VisualState x:Name="NarrowPadding">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Padding">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource MenuFlyoutItemThemePaddingNarrow}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon  Margin="0,0,12,0" x:Name="TextBlock" Glyph="{TemplateBinding Tag}" Height="16" Width="16" FontSize="16" />
+                                <TextBlock  Text="{TemplateBinding Text}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            </StackPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" x:Name="BackgroundDisplay">
+        <Maps:MapControl x:Name="myMap" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Height="730" Width="1260"  >
+
+        </Maps:MapControl>
+
+        <!--<Slider x:Name="slider" Margin="679,159,1072,561" Height="100" ValueChanged="slider_ValueChanged" Maximum="1200" Minimum="0" />-->
+        <!--<Slider x:Name="slider_test" Margin="579,316,0,0" Height="100" SmallChange="1" ValueChanged="slider_ValueChanged" Maximum="240" />-->
+        <!--<Slider x:Name="slider_test1" Margin="679,480,0,0" Height="100" SmallChange="1" ValueChanged="slider_ValueChanged" Maximum="100" />-->
+        <!--
+        <Button x:Name="Map3D" Click="Map3D_Click" HorizontalAlignment="Left" Content="Map3D"
+                Height="40" Margin="600,-1,0,0" VerticalAlignment="Top" Width="100">
+
+        </Button>
+                -->
+        <!--Map có kích thước 1366 x 730-->
+        <!--Màn hình kích thuwos 1366 x 768-->
+        <!--Khi nhận xong không cần hiện dữ liệu nên bỏ dòng sau-->
+        <!--
+        <TextBox x:Name="tbOutputText" HorizontalAlignment="Left" Margin="700,220,-12,-18" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="70" Width="666" Foreground="{ThemeResource AppBarToggleButtonCheckedPressedBorderThemeBrush}" />
+        -->
+        <!--Hiện khoảng cách-->
+        <!--Ta hiện khoảng cách trên đường thẳng-->
+
+
+        <!--Adjust-->
+
+        <Slider x:Name="slider_AdjTime" HorizontalAlignment="Left" Margin="488,682,0,0" VerticalAlignment="Top" Width="437" ValueChanged="adjTime_Click" Minimum="0" Maximum="100"/>
+        <TextBlock x:Name="tblock_Start_Timer" HorizontalAlignment="Left" FontSize="16" Margin="488,655,0,0" Foreground="Red" Text="" VerticalAlignment="Top" Height="25" Width="auto"/>
+        <TextBlock x:Name="tblock_End_Timer" HorizontalAlignment="Left" FontSize="18" Margin="853,655,0,0" Foreground="Red" Text="" VerticalAlignment="Top" Height="25" Width="auto"/>
+        <TextBlock x:Name="tblock_Current_Timer" HorizontalAlignment="Left" FontSize="18" Margin="679,655,0,0" Foreground="Red" Text="" VerticalAlignment="Top" Height="25" Width="auto"/>
+
+
+        <!--
+        <TextBox x:Name="TestText" HorizontalAlignment="Left" Height="41" Margin="750,300,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        -->
+        <!--_____________________________________________________-->
+
+
+
+
+
+        <!--
+        <canvas:CanvasControl Draw="CanvasControl_Draw" />-->
+        <!--Receive Data-->
+
+
+        <!--
+        <FlipView x:Name="flipView" HorizontalAlignment="Left" Height="138" Margin="177,370,0,0" VerticalAlignment="Top" Width="254"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Height="99" Margin="529,409,0,0" VerticalAlignment="Top" Width="238"/>
+        -->
+        <!--Input string-->
+        <TextBlock x:Name="tblock_Position" HorizontalAlignment="Left" FontSize="20" Foreground="Black" Margin="80,10,0,0" TextWrapping="Wrap" Text="Position: " VerticalAlignment="Top" Height="30" Width="80"/>
+        <!--Input Position-->
+        <TextBox x:Name="tb_Position" HorizontalAlignment="Left" Margin="170,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="30" Width="231" Background="Aqua" KeyDown="tb_Position_KeyDown"/>
+
+        <!--Show Latitude Longtitude-->
+        <TextBlock x:Name="tblock_LatAndLon" HorizontalAlignment="Left" FontSize="16" Foreground="Red" Margin="900,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="30" Width="auto"/>
+        <!--Show Zoom level-->
+        <TextBlock x:Name="tblock_ZoomLevel" HorizontalAlignment="Left" FontSize="16" Foreground="Red" Margin="840,10,0,0" TextWrapping="Wrap" Text="12.345" VerticalAlignment="Top" Height="30" Width="auto"/>
+        <!--Show time from GPS-->
+
+        <!--Get Coordinates button-->
+
+        <!-- Choose read com or read file button-->
+
+
+        <TextBlock x:Name="tblock_BaudRate" HorizontalAlignment="Left" Opacity="0" FontSize="20" Foreground="Red" Margin="628,240,0,0" TextWrapping="Wrap" Text="BaudRate: " VerticalAlignment="Top" Height="30" Width="80"/>
+        <!--Input BaudRate-->
+        <TextBox x:Name="tb_BaudRate" HorizontalAlignment="Left" Opacity="0" Margin="708,240,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="30" Width="231" Background="Aqua"/>
+
+        <!--list of com-->
+        <!--UART-->
+        <ListBox x:Name="ConnectDevices" Opacity="0" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5"
+                        ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" ItemsSource="{Binding Source={StaticResource DeviceListSource}}" Background="Green" Margin="628,270,0,0" Height="auto" Width="auto">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <!--<ListBox x:Name="ViewChooser" />-->
+
+        <!--<ListBox x:Name="SizePreferenceChooser"  />
+
+        <ListBox x:Name="AnchorSizePreferenceChooser" />-->
+
+        <!--*******************************************************************************-->
+        <Button x:Name="ShowButton" ToolTipService.ToolTip="Menu" Background="YellowGreen" VerticalAlignment="Top" Click="add_new_window_click" Foreground="{ThemeResource ApplicationForegroundThemeBrush}" Margin="449,10,0,0">
+            <Button.Content>
+                <FontIcon x:Name="icon_menu" FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;" Margin="0,5,0,0"/>
+            </Button.Content>
+            <Button.Flyout>
+                <MenuFlyout Placement= "Right">
+                    <MenuFlyoutItem x:Name="bt_Play" Text = "Play" Click="bt_play_Click"/>
+                    <MenuFlyoutItem x:Name="bt_Pause" Text = "Pause" Click="bt_pause_click"/>
+                    <MenuFlyoutSubItem x:Name="bt_Speed" Text="Speed">
+                        <MenuFlyoutItem Text="Increase" Click="bt_speed_inc_click"/>
+                        <MenuFlyoutItem Text="Decrease" Click="bt_speed_dec_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem x:Name="bt_LoadTrajectory" Text = "Load Trajectory" Click="bt_loadTrajectory_click"/>
+                    <!--<MenuFlyoutItem Text="Open .txt file" Click="bt_open_file_click"/>-->
+                    <MenuFlyoutSubItem x:Name="bt_load_data" Text="Load Flight Data">
+                        <MenuFlyoutItem Text="Nomal" Click="bt_open_file_click"/>
+                        <MenuFlyoutItem Text="Draw Path" Click="bt_open_file_to_draw_path_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem Text="Get Position" Click="bt_get_position_click"/>
+                    <MenuFlyoutSubItem Text="Zoom">
+                        <MenuFlyoutItem Text="Nomal" Click="bt_zoom_nomal_click"/>
+                        <MenuFlyoutItem Text="Auto" Click="bt_autoZoom_on_click"/>
+                        <MenuFlyoutItem Text="Off" Click="bt_autoZoom_off_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem x:Name="bt_AddDevice" Text = "Add Device" Click="add_new_device"/>
+                    <!--<MenuFlyoutSubItem Text="Device">
+                        <MenuFlyoutItem x:Name="bt_Connect" Text="Connect" Click="bt_device_connect_click"/>
+                        <MenuFlyoutItem x:Name="bt_DisConnect" IsEnabled="True" Text="DisConnect" Click="bt_device_disconnect_click"/>
+                    </MenuFlyoutSubItem>-->
+                    <!--Edit time sample to draw path of flight-->
+                    <MenuFlyoutSubItem Text="Sample Time">
+                        <MenuFlyoutItem x:Name="bt_Max" Text="0.2s" Click="bt_time_sample_max"/>
+                        <MenuFlyoutItem x:Name="bt_1s" Text="1s" Click="bt_time_sample_1s"/>
+                        <MenuFlyoutItem x:Name="bt_5s" Text="5s" Click="bt_time_sample_5s"/>
+                        <MenuFlyoutItem x:Name="bt_10" Text="10s" Click="bt_time_sample_10s"/>
+                        <MenuFlyoutItem x:Name="bt_20s" Text="20s" Click="bt_time_sample_20"/>
+                        <MenuFlyoutItem x:Name="bt_30s" Text="30s" Click="bt_time_sample_30s"/>
+
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSubItem Text="Engine Demo">
+                        <MenuFlyoutItem Text="On" Click="bt_EngineDome_on_click"/>
+                        <MenuFlyoutItem Text="Off" Click="bt_EngineDome_off_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutSubItem Text="Alarm Demo" >
+                        <MenuFlyoutItem Text="Fire On" Click="bt_Fire_Alarm_on_click"/>
+                        <MenuFlyoutItem Text="Fuel On" Click="bt_Fuel_Alarm_on_click"/>
+                        <MenuFlyoutItem Text="GPS Lost" Click="bt_Gps_Lost_on_click"/>
+                        <MenuFlyoutItem Text="Plane Disconnect" Click="bt_Plane_DisConnect_on_click"/>
+                        <MenuFlyoutItem Text="Over Speed" Click="bt_Over_Speed_on_click"/>
+                        <MenuFlyoutItem Text="Over Slope" Click="bt_Over_Slope_on_click"/>
+                        <MenuFlyoutItem Text="Off" Click="bt_AlarmDome_off_click"/>
+                    </MenuFlyoutSubItem>
+                    <MenuFlyoutItem x:Name="bt_Exit" Text = "Exit" Click="bt_exit_Click"/>
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
+        <!--Add 4 button-->
+        <!--<Button x:Name="button1" Content="B1" HorizontalAlignment="Left" Margin="020,612,0,0" Background="Green" Width="80" VerticalAlignment="Top"/>-->
+        <!--<Button x:Name="button2" Content="B2" HorizontalAlignment="Left" Margin="140,612,0,0" Background="Green" Width="80" VerticalAlignment="Top"/>
+        <Button x:Name="button3" Content="B3" HorizontalAlignment="Left" Margin="260,612,0,0" Background="Green" Width="80" VerticalAlignment="Top"/>
+        <Button x:Name="button4" Content="B4" HorizontalAlignment="Left" Margin="380,612,0,0" Background="Green" Width="80" VerticalAlignment="Top"/>-->
+
+        <Button x:Name="button1" Content="B1" HorizontalAlignment="Left" Margin="620,400,0,0" VerticalAlignment="Top" Width="80" FontSize="22" Opacity="1" Foreground="White" Padding="1,-5,1,0">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="#9BBFFFFF" Offset="1" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="button2" Content="B2" HorizontalAlignment="Left" Margin="620,400,0,0" VerticalAlignment="Top" Width="80" FontSize="22" Opacity="1" Foreground="White" Padding="1,-5,1,0">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="#9BBFFFFF" Offset="1" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="button3" Content="B3" HorizontalAlignment="Left" Margin="620,400,0,0" VerticalAlignment="Top" Width="80" FontSize="22" Opacity="1" Foreground="White" Padding="1,-5,1,0">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="#9BBFFFFF" Offset="1" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+        <Button x:Name="button4" Content="B4" HorizontalAlignment="Left" Margin="620,400,0,0" VerticalAlignment="Top" Width="80" FontSize="22" Opacity="1" Foreground="White" Padding="1,-5,1,0">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0" />
+                    <GradientStop Color="#9BBFFFFF" Offset="1" />
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+
+
+
+    </Grid>
+</Page>

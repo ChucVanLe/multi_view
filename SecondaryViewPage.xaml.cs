@@ -338,7 +338,7 @@ namespace SDKTemplate
                 }
                 for (int i = 0; i < dis.Count; i++)
                 {
-                    if ((computerName != dis[i].Name) && ("MIPAD2" != dis[i].Name))
+//                    if ((computerName != dis[i].Name) && ("MIPAD2" != dis[i].Name))
                     {
                         listOfDevices.Add(dis[i]);
                         cb_list_com.Items.Add(dis[i].Name);

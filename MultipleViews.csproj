@@ -17,7 +17,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
-    <AppxPackageDir>\\MIPAD2\chuc\</AppxPackageDir>
+    <AppxPackageDir>E:\</AppxPackageDir>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>FDF63B616EC6FD53B718D084483B9478A556C740</PackageCertificateThumbprint>
@@ -188,6 +188,7 @@
     <Content Include="Assets\fire_alarm.mp3" />
     <Content Include="Assets\fire_alrm_off.png" />
     <Content Include="Assets\fire_alrm_on.png" />
+    <Content Include="Assets\FixedNeedle.png" />
     <Content Include="Assets\fuel_alarm.mp3" />
     <Content Include="Assets\fuel_alarm_off.png" />
     <Content Include="Assets\fuel_alarm_on.png" />
@@ -207,7 +208,7 @@
     <Content Include="Assets\Logo_Full_620x300.png" />
     <Content Include="Assets\MyHome.png" />
     <Content Include="Assets\Needle.png" />
-    <Content Include="Assets\needle_aagle_to_des.png" />
+    <Content Include="Assets\needle_angle_to_des.png" />
     <Content Include="Assets\needle_speed.png" />
     <Content Include="Assets\over_slope.mp3" />
     <Content Include="Assets\over_slope_off.png" />
